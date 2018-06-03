@@ -13,6 +13,9 @@ namespace EMS.Controllers
 {
     public class HomeController : Controller
     {
+        public scopesservice emsservice;
+        public EVEStandardAPI emsAPI;
+
         public IActionResult Index()
         {
             return View();
@@ -37,16 +40,27 @@ namespace EMS.Controllers
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
 
+
         public IActionResult Login()
         {
-            scopesservice emsservice = new scopesservice();
+            emsservice = new scopesservice();
             emsservice.getScopes();
-            string callbackUri = "http://paichuuli-001-site1.etempurl.com/callback";
+            string callbackUri = "http://eve-ems.azurewebsites.net/Home/Callback";
             string clientID = "f8be736a20244e12840b919908ce55b7";
             string secretkey = "ejRR281zI3gcJz3qV6I3eIyfdWU7oy2hFSjI3QWw";
-            EVEStandardAPI emsAPI = new EVEStandardAPI("EMS", DataSource.Tranquility, new TimeSpan(),callbackUri,clientID,secretkey);   
-            emsAPI.SSO.AuthorizeToEVEURI(emsservice.scopes)
-            return Redirect();
+            TimeSpan timeOut = new TimeSpan(0, 5, 0);
+            emsAPI = new EVEStandardAPI("EMS", DataSource.Tranquility, timeOut, callbackUri,clientID,secretkey);
+            emsAPI.SSO.AuthorizeToEVEURI(emsservice.scopes,"ems");
+            string test = emsAPI.SSO.AuthorizeToEVEURI(emsservice.scopes, "ems").SignInURI;
+            return new RedirectResult(test);
+        }
+
+        [HttpGet]
+        public async Task<ActionResult> Callback()
+        {
+            await emsAPI.SSO.VerifyAuthorizationAsync(emsAPI.SSO.AuthorizeToEVEURI(emsservice.scopes, "ems"));
+            return Redirect("/Home/Index");
         }
     }
 }
+
