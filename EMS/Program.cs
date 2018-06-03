@@ -17,6 +17,7 @@ namespace EMS
             BuildWebHost(args).Run();
         }
 
+        public static List<string> Scopes = new List<string>();
         public static IWebHost BuildWebHost(string[] args) =>
             WebHost.CreateDefaultBuilder(args)
                 .UseStartup<Startup>()
