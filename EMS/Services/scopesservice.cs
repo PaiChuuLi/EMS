@@ -8,13 +8,13 @@ namespace EMS.Services
 {
     public class scopesservice
     {
-        public scopesservice() { }
+        string adress { get; set; }
+        public scopesservice(string adress) { this.adress = adress; }
         public List<string> scopes=new List<string>();
         public void getScopes()
-        {
-            
+        {            
             string scope = "";            
-            StreamReader objReader = new StreamReader(@"G:\EMS\EMS\EMS\emsscopes.ini");
+            StreamReader objReader = new StreamReader(this.adress);
             do
             {
                 scope = objReader.ReadLine();
