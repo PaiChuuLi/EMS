@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using EMS.Models;
@@ -11,10 +10,23 @@ using EMS.Services;
 using Microsoft.AspNetCore.Hosting;
 using System.IO;
 using EVEStandard.Models.SSO;
-using System.Net;
+using EVEStandard.Models.API;
+using EVEStandard.Models;
 
 namespace EMS.Controllers
 {
+    public class ESIModelDTO<T>
+    {
+        public T Model { get; set; }
+        public bool NotModified { get; set; }
+        public string ETag { get; set; }
+        public string Language { get; set; }
+        public DateTimeOffset? Expires { get; set; }
+        public DateTimeOffset? LastModified { get; set; }
+        public int MaxPages { get; set; }
+        public int RemainingErrors { get; set; }
+    }
+
     public class HomeController : Controller
     {
         private IHostingEnvironment _hostingEnvironment;
@@ -43,8 +55,9 @@ namespace EMS.Controllers
         public IActionResult Login()
         {            
             emsservice = new scopesservice(Path.Combine(_hostingEnvironment.WebRootPath, @"res\emsscopes.ini"));
-            emsservice.getScopes();            
-            string callbackUri = "http://eve-ems.azurewebsites.net/Home/Callback";
+            emsservice.getScopes();
+            //string callbackUri = "http://eve-ems.azurewebsites.net/Home/Callback";
+            string callbackUri = "http://localhost:55697/Home/Callback";
             string clientID = "f8be736a20244e12840b919908ce55b7";
             string secretkey = "ejRR281zI3gcJz3qV6I3eIyfdWU7oy2hFSjI3QWw";
             TimeSpan timeOut = new TimeSpan(0, 5, 0);
@@ -57,7 +70,8 @@ namespace EMS.Controllers
         {           
             emsservice = new scopesservice(Path.Combine(_hostingEnvironment.WebRootPath, @"res\emsscopes.ini"));
             emsservice.getScopes();
-            string callbackUri = "http://eve-ems.azurewebsites.net/Home/Callback";
+            //string callbackUri = "http://eve-ems.azurewebsites.net/Home/Callback";
+            string callbackUri = "http://localhost:55697/Home/Callback";
             string clientID = "f8be736a20244e12840b919908ce55b7";
             string secretkey = "ejRR281zI3gcJz3qV6I3eIyfdWU7oy2hFSjI3QWw";
             TimeSpan timeOut = new TimeSpan(0, 5, 0);
@@ -78,6 +92,32 @@ namespace EMS.Controllers
             ViewData["Scopes"] = character.Scopes;
             ViewData["TokenType"] = character.TokenType;
             ViewData["CharacterOwnerHash"] = character.CharacterOwnerHash;
+
+            AuthDTO authDTOems = new AuthDTO();
+            authDTOems.AccessToken = token;
+            authDTOems.Character = character;
+            List<CharacterMining> mininglist = new List<CharacterMining>();
+            long pages = 0;
+            try
+            {
+                (mininglist, pages) = await emsAPI.Industry.CharacterMiningLedgerV1Async(authDTOems, 1);
+            }
+            catch(Exception e)
+            {
+                
+                
+                
+                ViewData["emessage"]= e.Message.ToString(); ;
+                ViewData["error"]= e.ToString(); ;
+                ViewData["data"]= e.Data.ToString();
+                return View();
+            }
+            
+            ViewData["mininglist"] = mininglist;
+
+            string image = "https://imageserver.eveonline.com/Character/" + character.CharacterID + "_512.jpg";
+            Uri imguri = new Uri(image);
+            ViewData["image"] = imguri;
             return View();
         }
     }
