@@ -104,20 +104,15 @@ namespace EMS.Controllers
             }
             catch(Exception e)
             {
-                
-                
-                
                 ViewData["emessage"]= e.Message.ToString(); ;
                 ViewData["error"]= e.ToString(); ;
                 ViewData["data"]= e.Data.ToString();
                 return View();
             }
-            
             ViewData["mininglist"] = mininglist;
-
-            string image = "https://imageserver.eveonline.com/Character/" + character.CharacterID + "_512.jpg";
-            Uri imguri = new Uri(image);
-            ViewData["image"] = imguri;
+            //string image = "https://imageserver.eveonline.com/Character/" + character.CharacterID + "_512.jpg";
+            //Uri imguri = new Uri(image);
+            //ViewData["image"] = imguri;
             return View();
         }
     }
