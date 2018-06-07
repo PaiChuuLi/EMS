@@ -17,29 +17,18 @@
     </environment>
 </head>
 <body>
-    <nav class="navbar navbar-inverse navbar-fixed-top">
-        <div class="container nav">
-            @*<div class="navbar-header">*@
-            <a asp-area="" asp-controller="Home" asp-action="Index" class="navbar-brand">EvE Managment System</a>
-            <a asp-controller="Home" asp-action="Login"><img src="~/images/eve-sso-login-black-large.png" style="padding-top: 10px; float:right" /></a>
-            @*</div>*@
-
-        </div>
-    </nav>
-    <div class="container body-content">
-        @RenderBody()
-        
-
+<nav class="navbar navbar-inverse navbar-fixed-top">
+    <div class="container nav">
+        <a asp-area="" asp-controller="Home" asp-action="Index" class="navbar-brand">EvE Managment System</a>
+        <a asp-controller="Home" asp-action="Login"><img src="~/images/eve-sso-login-black-large.png" style="padding-top: 10px; float:right" /></a>
     </div>
-    <div class=" footer-copyright text-center py-3">
-        <footer id="footer" class="footer navbar-fixed-bottom">
-            <hr />
-            <p>&copy; @DateTime.Now.Year  - EMS</p>
-        </footer>       
-    </div>
+</nav>
+<div class="container body-content">
+    @RenderBody()
+</div>
 
     <environment include="Development">
-        <script src="~/lib/jquery/dist/jquery.js"><</script>
+        <script src="~/lib/jquery/dist/jquery.js"></script>
         <script src="~/lib/bootstrap/dist/js/bootstrap.js"></script>
         <script src="~/js/site.js" asp-append-version="true"></script>
     </environment>
@@ -56,8 +45,6 @@
                 integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"></script>
         <script src="~/js/site.min.js" asp-append-version="true"></script>
     </environment>
-
     @RenderSection("Scripts", required: false)
-
 </body >
 </html >

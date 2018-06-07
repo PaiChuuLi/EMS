@@ -9,11 +9,16 @@ namespace EMS.Services
     public class scopesservice
     {
         string adress { get; set; }
-        public scopesservice(string adress) { this.adress = adress; }
-        public List<string> scopes=new List<string>();
-        public void getScopes()
+        public List<string> scopes = new List<string>();
+
+        public scopesservice(string adress)
+        {
+            this.adress = adress;
+        }
+
+        public void GetScopes()
         {            
-            string scope = "";            
+            string scope = "";
             StreamReader objReader = new StreamReader(this.adress);
             do
             {
@@ -21,7 +26,7 @@ namespace EMS.Services
                 if (scope != null)
                     scopes.Add(scope);
             } while (scope != null);
-            objReader.Close();            
+            objReader.Close();
         }
     }
 }

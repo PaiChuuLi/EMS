@@ -1,0 +1,10 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<appdata>
+	<Settings>
+  		<CallbackURL>http://localhost:55697/Home/Callback</CallbackURL>
+  		<SecretKey>ejRR281zI3gcJz3qV6I3eIyfdWU7oy2hFSjI3QWw</SecretKey>
+  		<ClientID>f8be736a20244e12840b919908ce55b7</ClientID>
+    <ExpectedState>ems</ExpectedState>
+    </Settings>
+</appdata>
+

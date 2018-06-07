@@ -14,7 +14,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Include="wwwroot\res\emsscopes.ini" />
+    <None Include="wwwroot\res\emsscopes.ems" />
   </ItemGroup>
 
 </Project>
